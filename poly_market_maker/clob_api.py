@@ -1,6 +1,8 @@
 import logging
 import sys
 import time
+import os
+from dotenv import load_dotenv
 from py_clob_client.client import ClobClient, ApiCreds, OrderArgs, OpenOrderParams
 from py_clob_client.exceptions import PolyApiException
 
@@ -189,7 +191,8 @@ class ClobApi:
     def _init_client_L2(
         self, host, chain_id, private_key, creds: ApiCreds
     ) -> ClobClient:
-        clob_client = ClobClient(host, chain_id, private_key, creds)
+        funder = os.getenv('FUNDER')
+        clob_client = ClobClient(host, chain_id, private_key, creds, funder=funder, signature_type=1)
         try:
             if clob_client.get_ok() == OK:
                 self.logger.info("Connected to CLOB API!")
