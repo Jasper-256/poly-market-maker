@@ -173,7 +173,7 @@ class App:
         position_val = (token_A_balance * price_a) + (token_B_balance * price_b)
         self.logger.debug(f"Positions worth: {position_val}")
 
-        new_collateral = min(collateral_balance, max(personal_market_cap - position_val, 0.0))
+        new_collateral = min(collateral_balance, max(personal_market_cap - position_val, 0.0001))
         print(new_collateral)
 
         if abs(price_a + price_b) < 1e-10:
