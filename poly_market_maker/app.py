@@ -17,6 +17,7 @@ from poly_market_maker.orderbook import OrderBookManager
 from poly_market_maker.contracts import Contracts
 from poly_market_maker.metrics import keeper_balance_amount
 from poly_market_maker.strategy import StrategyManager
+import poly_market_maker.config
 
 load_dotenv()
 
@@ -165,8 +166,22 @@ class App:
             tokenid="-1",
         ).set(gas_balance)
 
+        price_a = poly_market_maker.config.price_a
+        price_b = poly_market_maker.config.price_b
+        personal_market_cap = poly_market_maker.config.personal_market_cap
+
+        position_val = (token_A_balance * price_a) + (token_B_balance * price_b)
+        self.logger.debug(f"Positions worth: {position_val}")
+
+        new_collateral = min(collateral_balance, max(personal_market_cap - position_val, 0.0))
+        print(new_collateral)
+
+        if abs(price_a + price_b) < 1e-10:
+            new_collateral = 0.0001
+        print(f"price_a={price_a}, price_b={price_b}")
+
         return {
-            Collateral: collateral_balance,
+            Collateral: new_collateral,
             Token.A: token_A_balance,
             Token.B: token_B_balance,
         }

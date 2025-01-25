@@ -10,6 +10,7 @@ from poly_market_maker.constants import MAX_DECIMALS
 from poly_market_maker.strategies.base_strategy import BaseStrategy
 from poly_market_maker.strategies.amm_strategy import AMMStrategy
 from poly_market_maker.strategies.bands_strategy import BandsStrategy
+import poly_market_maker.config
 
 
 class Strategy(Enum):
@@ -91,6 +92,10 @@ class StrategyManager:
             MAX_DECIMALS,
         )
         price_b = round(1 - price_a, MAX_DECIMALS)
+
+        poly_market_maker.config.price_a = price_a
+        poly_market_maker.config.price_b = price_b
+
         return {Token.A: price_a, Token.B: price_b}
 
     def cancel_orders(self, orders_to_cancel):
