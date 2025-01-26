@@ -133,5 +133,11 @@ dmypy.json
 # logs
 logs/
 
+# Saved events
+data/
+
+# Saved markets
+markets.json
+
 # vscode settings
 .vscode/
